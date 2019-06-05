@@ -1,0 +1,26 @@
+<table class='table'>
+        <thead class='thead'>
+                <tr class='tr'>
+                        <td class='td'><b>ID</b></td>
+                        <td class='td'><b>NAME</b></td>
+                        <td class='td'><b>ADDRESS</b></td>
+                        <td class='td'><b>STREET</b></td>
+                        <td class='td'><b>CITY</b></td>
+                        <td class='td'><b>STATE</b></td>
+                        <td class='td'><b>MENU</b></td>
+                </tr>
+        </thead>
+        ${
+        allRestaurants.rows.map(ele =>
+                `<tr class='tr'>
+                        <td class='td'>${ele.id}</td>
+                        <td class='td'>${ele.name}</td>
+                        <td class='td'>${ele.address}</td>
+                        <td class='td'>${ele.street}</td>
+                        <td class='td'>${ele.city}</td>
+                        <td class='td'>${ele.state}</td>
+                        <td class='td'>${ele.menu}</td>
+                </tr>`
+        ).join('')
+}
+</table>

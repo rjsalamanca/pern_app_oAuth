@@ -1,0 +1,24 @@
+<table class='table'>
+        <thead class='thead'>
+                <tr class='tr'>
+                        <td class='td'><b>ID</b></td>
+                        <td class='td'><b>FIRST NAME</b></td>
+                        <td class='td'><b>LAST NAME</b></td>
+                        <td class='td'><b>EMAIL</b></td>
+                        <td class='td'><b>PASSWORD</b></td>
+
+                </tr>
+        </thead>
+        ${
+        allUsers.map(ele =>
+                `
+                <tr class='tr'>
+                        <td class='td'>${ele.id}</td>
+                        <td class='td'>${ele.first_name}</td>
+                        <td class='td'>${ele.last_name}</td>
+                        <td class='td'>${ele.email}</td>
+                        <td class='td'>${ele.password}</td>
+                </tr>`
+        ).join('')
+}
+</table>
