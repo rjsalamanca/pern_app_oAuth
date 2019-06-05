@@ -8,6 +8,7 @@ class users {
         this.last_name = last_name;
         this.email = email;
         this.password = password;
+        this.checkPassword = (hash) => bcrypt.compareSync(this.password, hash);
     }
 
     static async getAll(){
@@ -43,7 +44,7 @@ class users {
                 WHERE email = $1`, 
                 [this.email]);
 
-            if(!comparePW(this.password,response.password)){
+            if(!this.checkPassword(response.password)){
                 throw new Error('WRONG PASSWORD');
             } else {
                 return true;
@@ -52,10 +53,6 @@ class users {
             return Promise.reject(err);
         }
     }
-}
-
-function comparePW(pw,hash){
-    return bcrypt.compareSync(pw, hash);
 }
 
 module.exports = users;
