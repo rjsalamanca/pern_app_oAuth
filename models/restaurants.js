@@ -1,6 +1,7 @@
 const db = require('./conn.js');
 
 class restaurants {
+
     static async getAll(){
         const query = `SELECT * FROM restaurants`;
         try{

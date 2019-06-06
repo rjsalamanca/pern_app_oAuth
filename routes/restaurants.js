@@ -6,15 +6,20 @@ const express = require('express'),
 router.get('/', async function (req, res, next) {
     const getRestaurants = await restaurants.getAll();
 
-    res.render('template', {
-        locals: {
-            title: 'Home Page',
-            allRestaurants: getRestaurants
-        },
-        partials: {
-            partial: 'partial-restaurants'
-        }
-    });
+    if(req.session.is_logged_in === true){
+        res.render('template', {
+            locals: {
+                title: 'Home Page',
+                allRestaurants: getRestaurants,
+                is_logged_in:req.session.is_logged_in
+            },
+            partials: {
+                partial: 'partial-restaurants'
+            }
+        });
+    } else {
+        res.redirect('/')
+    }
 });
 
 module.exports = router;

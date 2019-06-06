@@ -10,7 +10,8 @@ router.get('/', async (req, res, next) => {
     res.render('template', {
         locals: {
             title: 'Users Page',
-            allUsers: getUsers.rows
+            allUsers: getUsers.rows,
+            is_logged_in:req.session.is_logged_in
         },
         partials: {
             partial: 'partial-users'
@@ -21,7 +22,8 @@ router.get('/', async (req, res, next) => {
 router.get('/login', (req,res) =>{
     res.render('template', {
         locals:{
-            title: 'Login Page'
+            title: 'Login Page',
+            is_logged_in:req.session.is_logged_in
         },
         partials: {
             partial: 'partial-login-form'
@@ -32,7 +34,8 @@ router.get('/login', (req,res) =>{
 router.get('/signup', (req,res) =>{
     res.render('template', {
         locals:{
-            title: 'Sign Up Page'
+            title: 'Sign Up Page',
+            is_logged_in:req.session.is_logged_in
         },
         partials: {
             partial: 'partial-signup-form'
@@ -40,30 +43,57 @@ router.get('/signup', (req,res) =>{
     });
 });
 
+router.get('/logout', (req,res) =>{
+    console.log('logging out');
+    req.session.destroy();
+    console.log(req.session);
+
+    res.redirect('/');
+});
+
 router.post('/login', async (req,res) =>{
     const { email, password } = req.body
 
     const userInstance = new Users(null, null, null, email, password);
+
     try{
-        await userInstance.login();
+        let response = await userInstance.login();
+        req.session.is_logged_in = true;
+        console.log(response.first_name);
+        req.session.first_name = response.first_name;
+        req.session.last_name = response.last_name;
+        req.session.user_id = response.id;
+
+        console.log(req.session)
+
         console.log('CORRECT PW!')
-        res.redirect('/');
+        console.log(req.session.first_name ,
+            req.session.last_name ,
+            req.session.user_id );
+
+        res.redirect('/restaurants');
     }catch(err){
         console.log('WRONG PW!')
         res.redirect('/users/signup');
     }
 });
 
-router.post('/signup', (req,res) =>{
+router.post('/signup', async (req,res) =>{
     const { first_name, last_name, email, password} = req.body
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(password, salt)
     const userInstance = new Users(null, first_name, last_name, email, hash);
 
-    userInstance.save().then(response =>{
-        console.log('response is:', response);
-        res.sendStatus(200);
-    })
+    let check = await userInstance.checkIfCreated();
+
+    if(typeof check === 'object'){
+        res.redirect('/users/login');
+    } else {
+        await userInstance.save().then(response =>{
+            console.log('response is:', response);
+            res.redirect('/');
+        }).catch(err=>err)
+    }
 });
 
 module.exports = router;
