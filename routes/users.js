@@ -46,8 +46,6 @@ router.get('/signup', (req,res) =>{
 router.get('/logout', (req,res) =>{
     console.log('logging out');
     req.session.destroy();
-    console.log(req.session);
-
     res.redirect('/');
 });
 
@@ -59,18 +57,11 @@ router.post('/login', async (req,res) =>{
     try{
         let response = await userInstance.login();
         req.session.is_logged_in = true;
-        console.log(response.first_name);
         req.session.first_name = response.first_name;
         req.session.last_name = response.last_name;
         req.session.user_id = response.id;
 
-        console.log(req.session)
-
-        console.log('CORRECT PW!')
-        console.log(req.session.first_name ,
-            req.session.last_name ,
-            req.session.user_id );
-
+        console.log('CORRECT PW!');
         res.redirect('/restaurants');
     }catch(err){
         console.log('WRONG PW!')

@@ -14,7 +14,7 @@
         allRestaurants.rows.map(ele =>
                 `<tr class='tr'>
                         <td class='td'>${ele.id}</td>
-                        <td class='td'>${ele.name}</td>
+                        <td class='td'><a href="/restaurants/${ele.id}">${ele.name}</a></td>
                         <td class='td'>${ele.address}</td>
                         <td class='td'>${ele.street}</td>
                         <td class='td'>${ele.city}</td>

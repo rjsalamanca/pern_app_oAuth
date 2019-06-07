@@ -1,0 +1,41 @@
+<header class='header'>
+    <h1 class='h1'>${restaurant.name}</h1>
+    <h2 class='h2'>${restaurant.address} ${restaurant.street}, ${restaurant.city}, ${restaurant.state}</h2>
+</header>
+<hr/>
+${
+    restaurantReviews.map(ele=>
+        `
+        <div class='reviewContainer'>
+            <div class='score'>Star: ${ele.score}</div>
+            <div>${ele.context}</div>
+        </div>
+        <hr/>
+        `
+    ).join('')
+}
+
+<form action="/restaurants/${restaurant.id}" method='POST'>
+    <textarea class='textarea' rows="4" cols="50" name="review" placeholder="Leave a review..."></textarea>
+    <br/>
+    Stars:
+        <label>
+            <input class='starRadio' type="radio" name="stars" value="1">1
+        </label>
+        <label>
+            <input class='starRadio' type="radio" name="stars" value="2">2
+        </label>
+        <label>
+            <input class='starRadio' type="radio" name="stars" value="3">3
+        </label>
+        <label>
+            <input class='starRadio' type="radio" name="stars" value="4">4
+        </label>
+        <label>
+            <input class='starRadio' type="radio" name="stars" value="5">5
+        </label>
+    <br/>
+    <br/>
+
+    <button name='id' class='button is-primary' value=${restaurant.id} type="submit">submit</button>
+</form>
