@@ -33,9 +33,21 @@ class Restaurants {
     async getOneRestaurantReviews(){
         try{
             const response = await db.any(`
-                SELECT REST.id, REST.name, REV.context, REV.score
-                FROM restaurants AS REST, reviews AS REV
-                WHERE REV.restaurant_id = $1 AND REST.id = $1 ORDER BY REST.id`, [this.id]);
+                SELECT REST.id, REST.name, REV.context, REV.score,  U.first_name
+                FROM restaurants AS REST, reviews AS REV,  users AS U
+                WHERE REV.restaurant_id = $1 AND REST.id = $1 AND REV.userid = U.id ORDER BY REST.id`, [this.id]);
+            return response;
+        } catch(err){
+            return err.message;
+        }
+    }
+
+    async addReview(score,review,userID){
+        try{
+            const response = await db.any(
+                `INSERT INTO reviews (score, context, restaurant_id, userid) 
+                VALUES ($1,$2,$3,$4)`,[score,review,this.id,userID]
+            );
             return response;
         } catch(err){
             return err.message;

@@ -7,6 +7,7 @@ ${
     restaurantReviews.map(ele=>
         `
         <div class='reviewContainer'>
+            <div>Reviewer: ${ele.first_name}</div>
             <div class='score'>Star: ${ele.score}</div>
             <div>${ele.context}</div>
         </div>
